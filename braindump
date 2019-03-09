@@ -1,0 +1,51 @@
+Need timer/countdown clock that increments based on player actions.
+
+Status tracker for things like number of dogs (and how that affects speed, hypothermia risk, supplies, and how many vials of medicine are left
+
+Tracker for how far player is from Lovecraftian Nome Alaska
+
+Total victory = make it to town with all vials of medicine before the first death. Total loss = either lose all vials, or get to town after everyone dies.
+  - Can eventually have degrees of success, with scoring so players can try to do better
+
+Player input method(s):
+  - Whenever player is asked for input, they need to be able to type static commands (like getting the status of their inventory) as well as responding to the choice being presented.
+
+  -When choice is presented, call a function that gets the user input. if the input is a command, give user the info and then call the function again until the user responds to the choice. give response back to the choice function
+
+____________________________
+
+# show dogs
+# show medicine
+# show health
+# show time
+#
+# quit
+#
+# choose a | b | c ...
+# repeat
+#
+# ShowCommand
+#   #invoke([ arguments ]) #invoke([ "dogs" ]) -> ShowDogsCommand
+# ChooseCommand
+# RepeatCommand
+#
+# (How I do this in one of my projects)
+# bindings = Commands.new
+#   .bind("command", CommandClass.new)
+#   .bind(["s", "status"], StatusCommand.new())
+#   # bindings.bind (
+#   #   alias or aliases,
+#   #   command-handler instance
+#   # ) :: returns bindings
+#
+# def await_command()
+#   input = get_line_of_input()
+#   command = first_word(input)
+#   arguments = everything_after_first_word(input)
+#   bindings.dispatch(command, arguments)
+#
+# This lets the first token given by the user act as a "key" in a mapping from
+# command to command-handler. The handler knows thereafter how to parse the
+# arguments it receives (e.g., look for "--option value" strings.)
+#
+# That lets each command handling logic unit be self-contained.
