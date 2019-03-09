@@ -1,5 +1,7 @@
 require_relative 'player'
 require_relative 'context'
+require_relative 'commands\quit_command'
+require_relative 'commands\show_command'
 
 class Game
 
@@ -7,8 +9,9 @@ class Game
     @player = Player.new
     @context = Context.new
     @commands = {
-      "q" => :exit,
-      "quit" => :exit
+      "q" => QuitCommand.new,
+      "quit" => QuitCommand.new,
+      "show" => ShowCommand.new
     }
   end
 
@@ -21,20 +24,27 @@ class Game
   # end menu "YOU DIED" :) || "EVERYONE ELSE DIED" :|
   # start menu
   def start
+    puts @context
+
     until @context == :exit
-      puts @context
       input = gets.chomp
-      @context = interpret(@commands, input, @context)
+      new_context = interpret(@commands, input, @context)
+      puts new_context if new_context != @context
+      @context = new_context
     end
   end
 
-  def interpret(commands, command, context)
-    command = commands[command]
+  def interpret(commands, input, context)
+    args = input.split(" ")       # count dogs
+    command_name = args.shift()   # command_name = count; args = [ dogs ]
+    command = @commands[command_name]
     if command == nil
+      puts 'You done goofed. Try again? (type "help" if you\'re totally fucked)'
       context
     else
       # command.do_the_thing(args, context)
-      command
+      # select a
+      command.execute(args, context)
     end
   end
 
